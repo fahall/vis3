@@ -18,7 +18,7 @@ function [points P1 P2] = reconstruct_3d(name)
 % -- Georgia, Sept 12 2012
 
 
-%% ------- Load images, K matrices and matches ----------------------------
+% ------- Load images, K matrices and matches ----------------------------
 data_dir = ['../data/' name];
 
 % images
@@ -45,19 +45,19 @@ if true
     line([matches(:,1) matches(:,3) + size(I1,2)]', matches(:,[2 4])', 'Color', 'r');
 end
 % -------------------------------------------------------------------------
-%% --------- Find fundamental matrix --------------------------------------
+% --------- Find fundamental matrix --------------------------------------
 
 % F        : the 3x3 fundamental matrix,
 % res_err  : mean squared distance between points in the two images and their
 % their corresponding epipolar lines
-[F res_err] = fundamental_matrix(); % <------------------------------------- You write this one!
+[F res_err] = fundamental_matrix(matches); % <------------------------------------- You write this one!
 
 fprintf('Residual in F = %f',res_err);
 
 E = K2'*F*K1; % the essential matrix
 
 % -------------------------------------------------------------------------
-%% ---------- Rotation and translation of camera 2 ------------------------
+% ---------- Rotation and translation of camera 2 ------------------------
 
 % R : cell array with the possible rotation matrices of second camera
 % t : cell array of the possible translation vectors of second camera
@@ -104,7 +104,7 @@ P2 = K2*[R2 t2];
 % compute the 3D points with the final P2
 points = find_3d_points(); % <---------------------------------------------- You have already written this one!
 
-%% -------- plot points and centers of cameras ----------------------------
+% -------- plot points and centers of cameras ----------------------------
 
 
 plot_3d(); % <-------------------------------------------------------------- You write this one!
