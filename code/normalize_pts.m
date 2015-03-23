@@ -1,5 +1,4 @@
 function [ pts_normalized, T ] = normalize_pts( pts )
-%NOT WORKING ... WHY?
 %convert to homogeneous coordinates
 pts = horzcat(pts, ones(length(pts), 1));
 
@@ -23,9 +22,10 @@ for i = 1:2
 end
 
 T = t * s;
+
 T = T / T(3,3);
 
-nPts= pts * T;
+nPts= (T * pts')';
 
 %correct for change in 3
 w = repmat(nPts(:,3), [1, 3]);
