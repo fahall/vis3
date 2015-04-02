@@ -31,6 +31,5 @@ nPts= (T * pts')';
 w = repmat(nPts(:,3), [1, 3]);
 pts_normalized = nPts ./ w;
 
-
 end
 
