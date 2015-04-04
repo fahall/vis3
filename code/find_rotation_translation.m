@@ -39,12 +39,14 @@ Vs = {V, [-V(:, 1),  V(:, 2),  V(:, 3)], ...
          [ V(:, 1),  V(:, 2), -V(:, 3)], ...
          [ V(:, 1),  V(:, 2),  V(:, 3)]};
 
+% the sign of R is unknown
 Us = [Us, cellfun(@(x) x*(-1), Us,'un', 0)]; 
 Vs = [Vs, cellfun(@(x) x*(-1), Vs,'un', 0)];
 
 R_ninety = [[0, -1, 0]; [1, 0, 0]; [0, 0, 1]];
 
 for i = 1:length(Us)
+    % the sign of t is also unknown, but this is included in the variations above
     ts{i} = Us{i}(:, 3);
     
     % transpose is equal to inverse for U because it's unitary
