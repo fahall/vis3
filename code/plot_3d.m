@@ -6,7 +6,7 @@ Z = points(:, 3);
 C = Z;
 
 c1 = [0, 0, 0]';
-c2 = c1 + t2;
+c2 = c1 - t2;
 
 scatter3(X(:), Y(:), Z(:), 20, C(:), 'o'); 
 hold on;
