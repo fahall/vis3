@@ -31,7 +31,9 @@ F = FU * S * FV';
 %remove normalization
 F = T{3}' * F * T{1};
 
+TF = estimateFundamentalMatrix([x1,y1], [x2,y2], 'Method', 'Norm8Point');
+F = TF;
 %compute error
-res_err = f_residual_error(F, pts{1}, pts{3});
+res_err = f_residual_error(TF, pts{1}, pts{3});
 end
 
