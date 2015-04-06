@@ -80,7 +80,7 @@ for ti = 1:length(t)
     for ri = 1:length(R)
         R2 = R{ri};
         
-        P2 = K2*[R2 t2];
+        P2 = K2*[R2' ,-t2];
         
         [points_3d, errs(ti,ri)] = find_3d_points(P1, P2, matches); %<---------------------- You write this one!
         
