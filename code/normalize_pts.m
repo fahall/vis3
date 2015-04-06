@@ -21,7 +21,7 @@ for i = 1:2
     s(i,i) = scale;
 end
 
-T = t * s;
+T = s * t;
 
 T = T / T(3,3);
 
