@@ -107,6 +107,8 @@
 \newcommand{\hmwkClassInstructor}{Malik} % Teacher/lecturer
 \newcommand{\hmwkAuthorName}{Alex Hall and Rachel Albert} % Your name
 
+\newcommand{\code}[1]{\newline\texttt{#1}\newline}
+
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -153,13 +155,25 @@
 	Deliverables: Your answer in your report should include - description of how you calculate F , the definition you are using for the residual, how you are calculating the residual, the fundamental matrix and residuals that you get for the 2 sample inputs, and answers to the questions above. Again, if you like, you may include a code snippet if you think it makes your explanation any easier to understand.
 	}
 	
-	\problemAnswer{ % Answer
-	
-	ANSWER GOES HERE
-			
-%	\begin{center}
-%	\includegraphics[width=0.75\columnwidth]{pixOnly} % Example image
-%	\end{center}
+	\problemAnswer{
+	To calculate F, we first normalize the points by subtracting the mean and scaling by the spread in each axis. The final normalized points are centered at (0, 0) and span the space from -1 to 1 in each direction. Next we create matrix A, where A is an Nx9 matrix with each row equal to:\newline
+	\code{
+	A = [x1 .* x2, y1 .* x2, x2, x1 .* y2, y1 .* y2, y2, x1, y1, one];\newline
+	}
+	We can now obtain F from the SVD of A as follows:\newline
+	\code{
+	\%compute F \newline
+	[~,~,V] = svd(A, 0); \newline
+	F = reshape(V(:,9), 3, 3)'; \newline
+	[FU, FS, FV] = svd(F); \newline
+	S = diag([FS(1, 1), FS(2, 2), 0]); \%enforce rank = 2 \newline
+	F = FU * S * FV'; \newline
+	}
+	F is then de-normalized by applying the earlier normalization matrices in reverse.\newline\newline
+	The residual is calculated as follows. First epipolar lines are obtained for each of the corresponding points in the image, and these lines are normalized by dividing by their magnitude. Next, each point is multiplied element-wise by its corresponding epipolar line to obtain the distance between the point in the image and the estimated line on which the point should fall. The distance between the true point and the epipolar line is squared and summed for all points and returned as the residual error. This value corresponds to the minimum of Af (in equation 7 of the assignment), but we also place the additional constraint that F is of rank 2 by changing the values of S before calculating F, so our solution space is a subset of the possible solutions that could minimize the residual error.\newline\newline
+	The residuals for the two data sets are: \newline
+	House (Residual in F = 1.118042),\newline
+	Library (Residual in F = 1221.277610).
 	}
 
 \end{homeworkProblem}
@@ -172,13 +186,38 @@
 	Deliverables: Your answer in your report should include - all possible choices for t and R for the 2 sample inputs.
 	}
 	
-	\problemAnswer{ % Answer
-	
-	ANSWER GOES HERE
-			
-%	\begin{center}
-%	\includegraphics[width=0.75\columnwidth]{pixOnly} % Example image
-%	\end{center}
+	\problemAnswer{
+	House: \newline
+	$t = \pm (0.9995, -0.0205, 0.0229)$\newline\newline
+	R = \newline
+	$[(0.9938,   0.0284,   -0.1073);
+    	(0.0296,   -0.9995,    0.0093);
+   	(-0.1069   -0.0124   -0.9942)],\newline
+	[(0.9858,    0.0687,   -0.1530);
+   (-0.0701,    0.9975,   -0.0039);
+    (0.1523,    0.0146,    0.9882)],\newline
+	[(-0.9858,   -0.0687,    0.1530);
+    (0.0701,   -0.9975,    0.0039);
+   (-0.1523,   -0.0146,   -0.9882)],\newline
+   	[(-0.9938,   -0.0284,    0.1073);
+   (-0.0296,    0.9995,   -0.0093);
+    (0.1069,    0.0124,    0.9942)],\newline$\newline
+    INPUT LIBRARY NUMBERS STILL\newline
+    	Library: \newline
+	$t = \pm (0.9995, -0.0205, 0.0229)$\newline\newline
+	R = \newline
+	$[(0.9938,   0.0284,   -0.1073);
+    	(0.0296,   -0.9995,    0.0093);
+   	(-0.1069   -0.0124   -0.9942)],\newline
+	[(0.9858,    0.0687,   -0.1530);
+   (-0.0701,    0.9975,   -0.0039);
+    (0.1523,    0.0146,    0.9882)],\newline
+	[(-0.9858,   -0.0687,    0.1530);
+    (0.0701,   -0.9975,    0.0039);
+   (-0.1523,   -0.0146,   -0.9882)],\newline
+   	[(-0.9938,   -0.0284,    0.1073);
+   (-0.0296,    0.9995,   -0.0093);
+    (0.1069,    0.0124,    0.9942)],\newline$
 	}
 
 \end{homeworkProblem}
@@ -192,13 +231,15 @@
 	Deliverables: Your answer in your report should include - exactly how you calculate the reconstruction error, and reconstruction error for the 2 sample inputs, and answers to the questions above.
 	}
 	
-	\problemAnswer{ % Answer
+	\problemAnswer{ 
 	
-	ANSWER GOES HERE
+	We calculate the reconstruction error by reprojecting the 3D points we obtain via triangulation back into each image plane, and then calculating the mean squared distance between the original image point and the reprojected point. Since this problem is posed as a least squares solution when W=1, we find the optimal solution that satisfies the constraints:\newline\newline
+	$x1 = P1 * X$, and $x2 = P2 * X$\newline\newline
+	and therefore we are directly optimizing the reconstruction error with our method.\newline\newline
+	The reconstruction errors for the two data sets are: \newline
+	House (Reconstruction error = 87.536016),\newline
+	Library (Reconstruction error = 753.910958).
 			
-%	\begin{center}
-%	\includegraphics[width=0.75\columnwidth]{pixOnly} % Example image
-%	\end{center}
 	}
 
 \end{homeworkProblem}
@@ -211,13 +252,17 @@
 	Deliverables: Your answer in your report should include - a plot for each of the 2 sample inputs from a reasonable viewpoint.
 	}
 	
-	\problemAnswer{ % Answer
-	
-	ANSWER GOES HERE
-			
-%	\begin{center}
-%	\includegraphics[width=0.75\columnwidth]{pixOnly} % Example image
-%	\end{center}
+	\problemAnswer{
+	Our plots are shown below. Camera 1 is at the origin, and the color indicates order of the input points.\newline\newline
+	House\newline			
+	\begin{center}
+	\includegraphics[width=0.5\columnwidth]{house_result.eps} % Example image
+	\end{center} 
+	\bigskip
+	Library \newline
+	\begin{center}
+	\includegraphics[width=0.5\columnwidth]{library_result_2.eps} % Example image
+	\end{center}
 	}
 
 \end{homeworkProblem}

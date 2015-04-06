@@ -37,7 +37,7 @@ matches = load([data_dir '/' name '_matches.txt']);
 
 
 % visualize matches (disable or enable this whenever you want)
-if true
+if false
     linecolors = hot(length(matches));
     figure;
     imshow([I1 I2]); hold on;
@@ -55,7 +55,7 @@ end
 % their corresponding epipolar lines
 [F, res_err] = fundamental_matrix(matches); % <------------------------------------- You write this one!
 
-fprintf('Residual in F = % \n',res_err);
+fprintf('Residual in F = %f \n', res_err);
 
 E = K2'*F*K1; % the essential matrix
 
@@ -83,7 +83,7 @@ for ti = 1:length(t)
     for ri = 1:length(R)
         R2 = R{ri};
         
-        P2 = K2*[R2' ,-t2];
+        P2 = K2*[R2 ,t2];
         
         [points_3d, errs(ti,ri)] = find_3d_points(P1, P2, matches); %<---------------------- You write this one!
         

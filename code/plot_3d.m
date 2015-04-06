@@ -8,13 +8,12 @@ C = hot(length(points));
 %C = Z;
 
 c1 = [0, 0, 0]';
-%c2 = c1 - t2;
-c2 = c1;
-h = figure(1);
+c2 = c1 + t2;
+h = figure(2);
 set(h,'renderer','opengl');
-scatter3(X(:), Y(:), Z(:), 20, C, 'o'); 
+scatter3(-X(:), Y(:), Z(:), 20, C, 'o'); 
 hold on;
-scatter3([c1(1), c2(1)], [c1(2), c2(2)], [c1(3), c2(3)], 30, 'filled');
+scatter3(-[c1(1), c2(1)], [c1(2), c2(2)], [c1(3), c2(3)], 30, 'filled');
 colormap(hot); colorbar; 
 xlabel('X Coordinate'); 
 ylabel('Y Coordinate'); 
