@@ -18,7 +18,6 @@ y2 = pts{3}(:,2);
 one = ones(length(x1),1);
 
 %build the A Matrix
-
 A = [x1 .* x2, y1 .* x2, x2, x1 .* y2, y1 .* y2, y2, x1, y1, one];
 
 %compute F
