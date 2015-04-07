@@ -46,10 +46,10 @@ x1_p = [x1_p(:, 1) ./ x1_p(:, 3), x1_p(:, 2) ./ x1_p(:, 3)];
 x2_p = [x2_p(:, 1) ./ x2_p(:, 3), x2_p(:, 2) ./ x2_p(:, 3)];
 
 % Finally, square the difference and sum
-e1 = sum(sqrt(sum((pts(:, 1:2) - x1_p).^2, 2)));
-e2 = sum(sqrt(sum((pts(:, 3:4) - x2_p).^2, 2)));
+e1 = mean(sqrt(sum((pts(:, 1:2) - x1_p).^2, 2)));
+e2 = mean(sqrt(sum((pts(:, 3:4) - x2_p).^2, 2)));
 
-err = e1 + e2;
+err = mean([e1, e2]);
 
 end
 

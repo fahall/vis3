@@ -20,11 +20,12 @@ one = ones(length(x1),1);
 %build the A Matrix
 A = [x1 .* x2, y1 .* x2, x2, x1 .* y2, y1 .* y2, y2, x1, y1, one];
 
-%compute F
+% compute F
+% http://www.cs.unc.edu/~marc/tutorial/node54.html
 [~,~,V] = svd(A, 0);
 F = reshape(V(:,9), 3, 3)';
 [FU, FS, FV] = svd(F);
-S = diag([FS(1,1),FS(2,2), 0]);%enforce rank = 2
+S = diag([FS(1,1),FS(2,2), 0]); % enforce rank = 2
 F = FU * S * FV';
 
 %remove normalization
